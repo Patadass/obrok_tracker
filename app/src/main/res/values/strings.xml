@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">obrok_tracker</string>
+    <string name="btn_name">Button</string>
+    <string name="value_undef">undef</string>
+    <string name="reset_btn_name">Reset Budget</string>
+    <string name="set_budget_btn_name">Change Weekly Budget</string>
+</resources>
