@@ -63,12 +63,17 @@ class SetWeeklyBudgetActivity : AppCompatActivity() {
         val textView: TextView = findViewById(R.id.textInput)
         val button: Button = findViewById(view.id)
         val sb = StringBuilder()
+        if(view.id == R.id.buttonExit){
+            val intent = Intent(this, MainActivity::class.java)
+            setResult(RESULT_CANCELED, intent)
+            this.finish()
+        }
         if(view.id == R.id.buttonDone){
             if(textView.text.isNotEmpty()){
                 sb.append(textView.text)
                 if(sb.length > 8){
                     textView.text = null
-                    Toast.makeText(this,"Number too high",Toast.LENGTH_SHORT).show()
+                    Snackbar.make(findViewById(R.id.main),"Number too high",Snackbar.LENGTH_SHORT).show()
                     return
                 }
                 setWeeklyBudget(sb.toString().toInt())

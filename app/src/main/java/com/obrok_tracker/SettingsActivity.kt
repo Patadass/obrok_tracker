@@ -36,14 +36,18 @@ class SettingsActivity : AppCompatActivity() {
 
     fun buttonClick(view: View){
         when(view.id){
-            R.id.CWBButton -> {
+            R.id.buttonCWB -> {
                 val intent = Intent(this, SetWeeklyBudgetActivity::class.java)
                 startActivityForResult(intent, 0)
             }
-
-            R.id.resetButton -> {
+            R.id.buttonReset -> {
                 val intent = Intent(this, SettingsActivity::class.java)
                 setResult(31,intent)
+                this.finish()
+            }
+            R.id.buttonExit -> {
+                val intent = Intent(this, MainActivity::class.java)
+                setResult(RESULT_CANCELED,intent)
                 this.finish()
             }
         }

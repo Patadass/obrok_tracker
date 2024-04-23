@@ -98,6 +98,11 @@ class SubActivity : AppCompatActivity() {
         val textView: TextView = findViewById(R.id.textInput)
         val button: Button = findViewById(view.id)
         val sb = StringBuilder()
+        if(view.id == R.id.buttonExit){
+            val intent = Intent(this, MainActivity::class.java)
+            setResult(RESULT_CANCELED, intent)
+            this.finish()
+        }
         if(view.id == R.id.buttonDone){
             if(textView.text.isNotEmpty()){
                 sb.append(textView.text)

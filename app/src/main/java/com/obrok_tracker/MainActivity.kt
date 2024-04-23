@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, SettingsActivity::class.java)
                 startActivityForResult(intent,1)
             }
-            R.id.resetButton -> {
+            R.id.buttonReset -> {
                 resetBudget()
                 createActivity()
             }
