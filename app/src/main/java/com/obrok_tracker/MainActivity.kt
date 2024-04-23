@@ -2,7 +2,6 @@ package com.obrok_tracker
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Xml
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
@@ -134,10 +133,6 @@ class MainActivity : AppCompatActivity() {
                 createActivity()
             }
         }
-    }
-
-    private fun setNewWeeklyBudget(budget: Int){
-        writeToFile(FILE_WEEKLY_BUDGET, budget.toString())
     }
 
     private fun createNecessaryFiles(){
