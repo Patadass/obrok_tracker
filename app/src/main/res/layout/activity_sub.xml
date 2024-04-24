@@ -5,6 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="false"
+    android:animationCache="false"
     tools:context=".SubActivity">
 
   <TextView
@@ -225,8 +227,8 @@
       style="@style/Widget.Material3.Button.IconButton"
       android:layout_width="65dp"
       android:layout_height="65dp"
-      android:onClick="buttonClick"
       android:background="@android:color/white"
+      android:onClick="buttonClick"
       android:text=""
       app:icon="@android:drawable/ic_menu_close_clear_cancel"
       app:iconGravity="textEnd"

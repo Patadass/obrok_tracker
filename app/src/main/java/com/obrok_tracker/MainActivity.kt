@@ -1,8 +1,11 @@
 package com.obrok_tracker
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.transition.Explode
 import android.view.View
+import android.view.Window
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -33,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContentView(R.layout.activity_main)
 
         createNecessaryFiles()
@@ -105,6 +109,9 @@ class MainActivity : AppCompatActivity() {
 
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {//overrides so i can call createActivity()
+        if(requestCode == 0){
+            overridePendingTransition(R.anim.static_animation,R.anim.static_animation)
+        }
         if(resultCode == 30){// requestCode #1 means we are coming from SetWeeklyBudgetActivity
             Snackbar.make(findViewById(R.id.main),"Weekly budget set to ${readFromFile(
                 FILE_WEEKLY_BUDGET)}",Snackbar.LENGTH_SHORT).show()
