@@ -53,7 +53,6 @@ class MainActivity : AppCompatActivity() {
         }
         val subButton: Button = findViewById(R.id.subButton)
         val settingsButton: Button = findViewById(R.id.settingButton)
-
         val valueText: TextView = findViewById(R.id.valueText)
         val progressBar: ProgressBar = findViewById(R.id.progressBar)
         progressBar.max = readFromFile(FILE_WEEKLY_BUDGET).toInt()
