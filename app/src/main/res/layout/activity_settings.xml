@@ -8,7 +8,7 @@
     tools:context=".SettingsActivity">
 
     <Button
-        android:id="@+id/resetButton"
+        android:id="@+id/buttonReset"
         android:layout_width="152dp"
         android:layout_height="67dp"
         android:onClick="buttonClick"
@@ -21,7 +21,7 @@
         app:layout_constraintVertical_bias="0.685" />
 
     <Button
-        android:id="@+id/CWBButton"
+        android:id="@+id/buttonCWB"
         android:layout_width="152dp"
         android:layout_height="67dp"
         android:onClick="buttonClick"
@@ -32,4 +32,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.341" />
+
+    <Button
+        android:id="@+id/buttonExit"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:onClick="buttonClick"
+        android:background="@android:color/white"
+        android:text=""
+        app:icon="@android:drawable/ic_menu_close_clear_cancel"
+        app:iconGravity="textEnd"
+        app:iconSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.024" />
 </androidx.constraintlayout.widget.ConstraintLayout>
