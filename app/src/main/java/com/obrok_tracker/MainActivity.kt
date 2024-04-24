@@ -16,6 +16,8 @@ import java.io.FileInputStream
 import java.lang.StringBuilder
 import java.util.Calendar
 import java.util.Date
+import kotlin.math.abs
+import kotlin.math.max
 
 //RESULT CODES
 //MainActivity start at 00 going 01,02,03....
@@ -44,29 +46,58 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
     }
 
     private fun createActivity(){
+        //redraws changes
         if(isNewWeek()){
             resetBudget()
         }
-        val subButton: Button = findViewById(R.id.subButton)
         val settingsButton: Button = findViewById(R.id.settingButton)
         val valueText: TextView = findViewById(R.id.valueText)
         val progressBar: ProgressBar = findViewById(R.id.progressBar)
-        progressBar.max = readFromFile(FILE_WEEKLY_BUDGET).toInt()
-        progressBar.progress = readFromFile(FILE_BUDGET).toInt()
         valueText.text = readFromFile(FILE_BUDGET)
-        subButton.text = "-"
-        settingsButton.text = "S"
+        settingsButton.text = ""
+        progressBar.max = readFromFile(FILE_WEEKLY_BUDGET).toInt()
+        animateProgressBar(progressBar,readFromFile(FILE_BUDGET).toInt())
+    }
+    
+    private fun animateProgressBar(progressBar: ProgressBar, endProgress: Int){
+        //takes the desired end progress and animates the current progress to desired progress
+        if(progressBar.progress != endProgress){
+            val maxLoops = 5000
+            Thread {
+                run {
+                    var i = 0
+                    while (progressBar.progress != endProgress) {
+                        if (progressBar.progress < endProgress) {
+                            progressBar.progress+=1
+                        }
+                        if (progressBar.progress > endProgress) {
+                            progressBar.progress-=1
+                        }
+                        try {
+                            Thread.sleep(1)
+                            i++
+                        } catch (e: InterruptedException) {
+                            e.printStackTrace()
+                        }
+                        if(i >= maxLoops){//fail safe if loop get stuck which it shouldn't
+                            break
+                        }
+                    }
+                }
+            }.start()
+        }
     }
 
     private fun resetBudget(){
+        //resets the budgets to the set weekly budget
         writeToFile(FILE_BUDGET, readFromFile(FILE_WEEKLY_BUDGET))
     }
 
     private fun isNewWeek(): Boolean{
+        //checks if a new week has passed from the last known change in budget which is saved in date.txt
         val date = Date()
         val calendar = Calendar.getInstance()
         calendar.time = date
@@ -104,7 +135,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {//overrides so i can call createActivity()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == 0){
             overridePendingTransition(R.anim.static_animation,R.anim.static_animation)
         }
@@ -122,6 +153,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun buttonClick(view: View) {
+        //button click handling
         when(view.id){
             R.id.subButton -> {
                 val intent = Intent(this, SubActivity::class.java)
@@ -139,6 +171,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createNecessaryFiles(){
+        //creates necessary files if they don't exist
         val ctx = applicationContext
         println("CREATING NECESSARY FILES")
         for(fileItem in FILE_LIST){
@@ -157,6 +190,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun writeToFile(fileName: String, text: String){
+        //write to given file name in ctx dir
         val ctx = applicationContext
         val file = File(ctx.filesDir,fileName)
         file.delete()
@@ -165,6 +199,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun readFromFile(fileName: String): String {
+        //read from given file name in ctx dir
         val ctx = applicationContext
         val file = File(ctx.filesDir, fileName)
         return FileInputStream(file).bufferedReader().use { it.readText() }

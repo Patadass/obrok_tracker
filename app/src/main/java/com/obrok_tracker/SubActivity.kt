@@ -45,13 +45,9 @@ class SubActivity : AppCompatActivity() {
         val button8: Button = findViewById(R.id.button8)
         val button9: Button = findViewById(R.id.button9)
         val button0: Button = findViewById(R.id.button0)
-        val buttonDone: Button = findViewById(R.id.buttonDone)
-        val buttonBack: Button = findViewById(R.id.buttonBack)
         val progressBar: ProgressBar = findViewById(R.id.progressBar)
         progressBar.max = readFromFile(FILE_WEEKLY_BUDGET).toInt()
         progressBar.progress = readFromFile(FILE_BUDGET).toInt()
-        buttonBack.text = "B"
-        buttonDone.text = "E"
         button0.text = "0"
         button1.text = "1"
         button2.text = "2"
@@ -84,6 +80,7 @@ class SubActivity : AppCompatActivity() {
     }
 
     private fun writeDateToFile(fileName: String){
+        //write to file in [ weekOfYear;year ] csv format
         val sb = StringBuilder()
         val date = Date()
         val calendar = Calendar.getInstance()
@@ -96,6 +93,7 @@ class SubActivity : AppCompatActivity() {
     }
 
     fun buttonClick(view: View){
+        //button click handling
         val textView: TextView = findViewById(R.id.textInput)
         val button: Button = findViewById(view.id)
         val sb = StringBuilder()
