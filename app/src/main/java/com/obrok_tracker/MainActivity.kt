@@ -1,6 +1,9 @@
 package com.obrok_tracker
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.LightingColorFilter
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -8,6 +11,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.isDigitsOnly
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.snackbar.Snackbar
@@ -16,8 +20,6 @@ import java.io.FileInputStream
 import java.lang.StringBuilder
 import java.util.Calendar
 import java.util.Date
-import kotlin.math.abs
-import kotlin.math.max
 
 //RESULT CODES
 //MainActivity start at 00 going 01,02,03....
@@ -56,25 +58,51 @@ class MainActivity : AppCompatActivity() {
         val settingsButton: Button = findViewById(R.id.settingButton)
         val valueText: TextView = findViewById(R.id.valueText)
         val progressBar: ProgressBar = findViewById(R.id.progressBar)
-        valueText.text = readFromFile(FILE_BUDGET)
         settingsButton.text = ""
         progressBar.max = readFromFile(FILE_WEEKLY_BUDGET).toInt()
-        animateProgressBar(progressBar,readFromFile(FILE_BUDGET).toInt())
+        animateTextViewAndProgressBar(valueText, progressBar, readFromFile(FILE_BUDGET).toInt(), true)
     }
-    
-    private fun animateProgressBar(progressBar: ProgressBar, endProgress: Int){
-        //takes the desired end progress and animates the current progress to desired progress
-        if(progressBar.progress != endProgress){
+
+    private fun animateTextViewAndProgressBar(textView: TextView, progressBar: ProgressBar, endNumber: Int, changeColor: Boolean = false) {
+        //takes the desired end number and animates the current number to desired number
+        //used to be 2 separate functions but this is prob faster and doesn't create 2 threads
+        if (textView.text.isEmpty() || !textView.text.isDigitsOnly()) {
+            textView.text = "0"
+            progressBar.progress = 0
+        }
+        if (textView.text.toString().toInt() != endNumber) {
             val maxLoops = 5000
             Thread {
                 run {
                     var i = 0
-                    while (progressBar.progress != endProgress) {
-                        if (progressBar.progress < endProgress) {
-                            progressBar.progress+=1
+                    var curNum: Int = textView.text.toString().toInt()
+                    //this is all color stuff [might remove progressBar color change its clunky and doesn't look that good]
+                    val curTextViewColor = textView.currentTextColor // get current color so you can change it back
+                    val curProgressBarSecondaryProgressTintList = progressBar.secondaryProgressTintList // get current color so you can change it back
+                    val curProgressBarProgressTintList = progressBar.progressTintList // get current color so you can change it back
+                    if(curNum < endNumber && changeColor){
+                        textView.setTextColor(getColor(R.color.light_green))
+                        progressBar.secondaryProgressTintList = ColorStateList.valueOf(getColor(R.color.light_green))
+                        progressBar.progressTintList = ColorStateList.valueOf(getColor(R.color.light_green))
+                    }
+                    if(curNum > endNumber && changeColor){
+                        textView.setTextColor(getColor(R.color.light_red))
+                        progressBar.secondaryProgressTintList = ColorStateList.valueOf(getColor(R.color.light_red))
+                        progressBar.progressTintList = ColorStateList.valueOf(getColor(R.color.light_red))
+                    }
+                    //
+                    while (curNum != endNumber) {
+                        if (curNum < endNumber) {
+                            curNum += 1
                         }
-                        if (progressBar.progress > endProgress) {
-                            progressBar.progress-=1
+                        if (curNum > endNumber) {
+                            curNum -= 1
+                        }
+                        runOnUiThread {// i understand this but not really
+                            run {
+                                textView.text = curNum.toString()
+                                progressBar.progress = curNum
+                            }
                         }
                         try {
                             Thread.sleep(1)
@@ -82,10 +110,17 @@ class MainActivity : AppCompatActivity() {
                         } catch (e: InterruptedException) {
                             e.printStackTrace()
                         }
-                        if(i >= maxLoops){//fail safe if loop get stuck which it shouldn't
+                        if (i >= maxLoops) {//fail safe if loop get stuck which it shouldn't
                             break
                         }
                     }
+                    //change back to original color
+                    if(changeColor){
+                        textView.setTextColor(curTextViewColor)
+                        progressBar.secondaryProgressTintList = curProgressBarSecondaryProgressTintList
+                        progressBar.progressTintList = curProgressBarProgressTintList
+                    }
+                    //
                 }
             }.start()
         }
@@ -137,7 +172,7 @@ class MainActivity : AppCompatActivity() {
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == 0){
-            overridePendingTransition(R.anim.static_animation,R.anim.static_animation)
+            overridePendingTransition(0,0) //override transition animation so there isn't one
         }
         if(resultCode == 30){// requestCode #1 means we are coming from SetWeeklyBudgetActivity
             Snackbar.make(findViewById(R.id.main),"Weekly budget set to ${readFromFile(
