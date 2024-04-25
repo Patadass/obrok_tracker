@@ -21,7 +21,8 @@ class SubActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        overridePendingTransition(R.anim.static_animation,R.anim.static_animation)
+        
+        overridePendingTransition(0,0)
 
         setContentView(R.layout.activity_sub)
 
