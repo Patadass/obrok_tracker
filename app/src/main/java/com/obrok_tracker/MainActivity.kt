@@ -2,10 +2,9 @@ package com.obrok_tracker
 
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.LightingColorFilter
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -33,7 +32,7 @@ const val FILE_WEEKLY_BUDGET = "weekly_budget.txt"
 const val DEFAULT_WEEKLY_BUDGET = 840
 val FILE_LIST = arrayListOf(FILE_BUDGET, FILE_DATE, FILE_WEEKLY_BUDGET)
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -55,12 +54,17 @@ class MainActivity : AppCompatActivity() {
         if(isNewWeek()){
             resetBudget()
         }
+        findViewById<Button>(R.id.invisibleButton).visibility = View.INVISIBLE
         val settingsButton: Button = findViewById(R.id.settingButton)
         val valueText: TextView = findViewById(R.id.valueText)
         val progressBar: ProgressBar = findViewById(R.id.progressBar)
         settingsButton.text = ""
         progressBar.max = readFromFile(FILE_WEEKLY_BUDGET).toInt()
         animateTextViewAndProgressBar(valueText, progressBar, readFromFile(FILE_BUDGET).toInt(), true)
+        findViewById<Button>(R.id.subButton).setOnLongClickListener {
+            buttonLongClick(findViewById(R.id.subButton))
+            return@setOnLongClickListener true
+        }
     }
 
     private fun animateTextViewAndProgressBar(textView: TextView, progressBar: ProgressBar, endNumber: Int, changeColor: Boolean = false) {
@@ -201,6 +205,24 @@ class MainActivity : AppCompatActivity() {
             R.id.buttonReset -> {
                 resetBudget()
                 createActivity()
+            }
+        }
+    }
+
+    fun layoutClick(view: View){
+        if(findViewById<Button>(R.id.invisibleButton).visibility == View.VISIBLE){
+            findViewById<Button>(R.id.invisibleButton).visibility = View.INVISIBLE
+            //animation
+            //val moveDown = AnimationUtils.loadAnimation(applicationContext,R.anim.move_down)
+            //findViewById<Button>(R.id.invisibleButton).startAnimation(moveDown)
+        }
+    }
+
+    private fun buttonLongClick(view: View){
+        when(view.id){
+            R.id.subButton -> {
+                //TODO: Do something with this button
+                findViewById<Button>(R.id.invisibleButton).visibility = View.VISIBLE
             }
         }
     }

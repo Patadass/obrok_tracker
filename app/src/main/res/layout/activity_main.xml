@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:onClick="layoutClick"
     tools:context=".MainActivity">
 
     <TextView
@@ -24,7 +25,9 @@
         android:id="@+id/subButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:longClickable="true"
         android:onClick="buttonClick"
+        android:visibility="visible"
         app:icon="?attr/actionModeCutDrawable"
         app:iconGravity="textTop"
         app:iconPadding="0dp"
@@ -49,6 +52,19 @@
         app:layout_constraintVertical_bias="0.033" />
 
     <Button
+        android:id="@+id/invisibleButton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:text="Button"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.434"
+        app:layout_constraintStart_toEndOf="@+id/subButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.774" />
+
+    <Button
         android:id="@+id/settingButton"
         style="@style/Widget.Material3.Button.IconButton"
         android:layout_width="55dp"
@@ -56,9 +72,9 @@
         android:background="@android:color/white"
         android:onClick="buttonClick"
         android:text="@string/btn_name"
-        app:icon="@android:drawable/ic_menu_preferences"
+        app:icon="@android:drawable/ic_menu_manage"
         app:iconGravity="textTop"
-        app:iconSize="30dp"
+        app:iconSize="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.954"
