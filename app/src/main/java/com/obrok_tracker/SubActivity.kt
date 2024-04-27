@@ -3,6 +3,7 @@ package com.obrok_tracker
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -21,7 +22,6 @@ class SubActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        
         overridePendingTransition(0,0)
 
         setContentView(R.layout.activity_sub)
@@ -36,30 +36,9 @@ class SubActivity : AppCompatActivity() {
     }
 
     private fun createActivity(){
-        val button1: Button = findViewById(R.id.button1)
-        val button2: Button = findViewById(R.id.button2)
-        val button3: Button = findViewById(R.id.button3)
-        val button4: Button = findViewById(R.id.button4)
-        val button5: Button = findViewById(R.id.button5)
-        val button6: Button = findViewById(R.id.button6)
-        val button7: Button = findViewById(R.id.button7)
-        val button8: Button = findViewById(R.id.button8)
-        val button9: Button = findViewById(R.id.button9)
-        val button0: Button = findViewById(R.id.button0)
         val progressBar: ProgressBar = findViewById(R.id.progressBar)
         progressBar.max = readFromFile(FILE_WEEKLY_BUDGET).toInt()
         progressBar.progress = readFromFile(FILE_BUDGET).toInt()
-        button0.text = "0"
-        button1.text = "1"
-        button2.text = "2"
-        button3.text = "3"
-        button4.text = "4"
-        button5.text = "5"
-        button6.text = "6"
-        button7.text = "7"
-        button8.text = "8"
-        button9.text = "9"
-
         val valueText: TextView = findViewById(R.id.valueText)
         val textInput: TextView = findViewById(R.id.textInput)
         textInput.text = null
